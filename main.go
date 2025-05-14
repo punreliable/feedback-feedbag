@@ -21,12 +21,13 @@ type Comment struct {
 }
 
 func main() {
+
+	fmt.Print("Here we go...\n")
 	// postURL := "https://web.facebook.com/photo/?fbid=1298842747871125&set=a.835084834246921"
-	// _, page := utils.Login("", "", postURL)
-	// chromiumPath := "/usr/bin/google-chrome"
-	// MacOS chromiumPath
+	//_, page := utils.Login("", "", postURL)
+	//chromiumPath := "/usr/bin/google-chrome"
 	chromiumPath := "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-	postURL := "https://web.facebook.com/photo/?fbid=122155001240351922&set=gm.1856407561794726&idorvanity=1280557499379738"
+	postURL := "https://www.facebook.com/100064306171261/posts/pfbid02rhBKwS16aMJyqbTyFNqfrfcJD3cdKjCV93NTTLeSJMgMAA3FFvtFSpf5m3os1VWNl"
 	l := launcher.New().
 		Bin(chromiumPath).
 		Headless(false).
@@ -36,10 +37,15 @@ func main() {
 		Set("disable-software-rasterizer", "true").
 		Set("disable-site-isolation-trials", "true")
 
+	// fmt.Print("...I need to start a Browser...\n")
 	browser := rod.New().ControlURL(l.MustLaunch()).MustConnect().NoDefaultDevice()
+	// fmt.Print("...ok, Browser is running...\n")
 	page := browser.MustPage(postURL).MustWindowMaximize().MustWaitLoad().MustWaitDOMStable()
+	// fmt.Print("...ok, Page is running...\n")
 	page.MustElement(`div.x6s0dn4.x78zum5.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xe0p6wg`).MustClick()
+	// fmt.Print("...pfeewww I'm sleepy, boy...\n")
 	time.Sleep(3 * time.Second)
+	// fmt.Print("...I just slept 3 seconds...\n")
 	menuItems := page.MustElements(`div[role="menuitem"]`)
 	for _, menuItem := range menuItems {
 		text := menuItem.MustText()
@@ -47,8 +53,11 @@ func main() {
 			menuItem.MustClick()
 		}
 	}
+	// fmt.Print("...pfeewww I'm sleepy, boy...\n")
 	time.Sleep(3 * time.Second)
+	// fmt.Print("...I just slept for 3 seconds...\n")
 
+	// fmt.Print("...Let's do replies...\n")
 	maxReplyIterations := 20
 	replyIter := 0
 	for {
@@ -80,28 +89,31 @@ func main() {
 		time.Sleep(10 * time.Second)
 	}
 
-	fmt.Println(len(page.MustElements(`div[role="article"]`)))
+	fmt.Print("...About to print the number of articles...")
+	fmt.Print("\n")
+	fmt.Print(len(page.MustElements(`div[role="article"]`)))
+	fmt.Print("\n")
 
-	// I do not see a div[role="complementary"] when not logged in, unsure what this is for
 	// complementary := page.MustElement(`div[role="complementary"]`)
 	// complementary.MustClick()
 
-	for {
-		// err := scrollToBottomByKeyboard(page)
-		// if err != nil {
-		// 	log.Println(err)
-		// 	os.Exit(1)
-		// }
-
-			maxIterations := 10
+	fmt.Print("Max Iterations set to 10, starting now...\n")
+	maxIterations := 10
 outer:
-for i := 0; i < maxIterations; i++ {
+
+	for i := 0; i < maxIterations; i++ {
+
+		// fmt.Print("...beginning loop...\n")
 
 		pageHasViewMoreCommentsButton := page.MustHas(`div.x1i10hfl.xjbqb8w.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x13fuv20.xu3j5b3.x1q0q8m5.x26u7qi.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.xdl72j9.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x2lwn1j.xeuugli.xexx8yu.x18d9i69.xkhd6sd.x1n2onr6.x16tdsg8.x1hl2dhg.xggy1nq.x1ja2u2z.x1t137rt.x1o1ewxj.x3x9cwd.x1e5q0jg.x13rtm0m.x3nfvp2.x87ps6o.x1lku1pv.x1a2a7pz.x6s0dn4.xi81zsa.x1q0g3np.x1iyjqo2.xs83m0k.xsyo7zv`)
 
+		// fmt.Print("...I wonder if the pageHasViewMoreCommentsButton is displayed...\n")
 		if pageHasViewMoreCommentsButton {
-			
-			fmt.Println("Page has view more comments button")
+
+			// fmt.Print("\n")
+			// fmt.Print("Page has view more comments button...")
+			// fmt.Print("\n")
+
 			timeout := time.After(1 * time.Minute)
 			ticker := time.NewTicker(1 * time.Second)
 			defer ticker.Stop()
@@ -127,7 +139,6 @@ for i := 0; i < maxIterations; i++ {
 				break
 			}
 			// Wait for the button to be clickable
-			
 
 			// Block image requests
 			err := proto.NetworkSetBlockedURLs{
@@ -139,36 +150,44 @@ for i := 0; i < maxIterations; i++ {
 			}
 
 			page.MustEval(`() => document.querySelector('div.x1i10hfl.xjbqb8w.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x13fuv20.xu3j5b3.x1q0q8m5.x26u7qi.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.xdl72j9.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x2lwn1j.xeuugli.xexx8yu.x18d9i69.xkhd6sd.x1n2onr6.x16tdsg8.x1hl2dhg.xggy1nq.x1ja2u2z.x1t137rt.x1o1ewxj.x3x9cwd.x1e5q0jg.x13rtm0m.x3nfvp2.x87ps6o.x1lku1pv.x1a2a7pz.x6s0dn4.xi81zsa.x1q0g3np.x1iyjqo2.xs83m0k.xsyo7zv').click()`)
-			fmt.Println("View more comments button clicked")
+
+			// fmt.Print("\n")
+			// fmt.Print("View more comments button clicked")
+			// fmt.Print("\n")
 
 			timeout2 := time.After(3 * time.Minute)
 			ticker2 := time.NewTicker(1 * time.Second)
 			defer ticker2.Stop()
 
-
 			for {
 				select {
 				case <-timeout2:
-					fmt.Println("Timeout reached! Exiting loop.")
+					fmt.Print("\n")
+					fmt.Print("Timeout reached! Exiting loop.")
+					fmt.Print("\n")
 				case <-ticker2.C:
 					loadingComments := page.MustHas(`div.html-div.xdj266r.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x78zum5.x1w0mnb.xeuugli`)
 					if loadingComments {
-						fmt.Println("Loading comments...")
-						time.Sleep(10 * time.Millisecond)
+						fmt.Print("\n")
+						fmt.Print("Loading comments...")
+						fmt.Print("\n")
+						time.Sleep(20 * time.Millisecond)
 						continue
 					}
-					fmt.Println("Comments loaded.")
+					fmt.Print("\n")
+					fmt.Print("Comments loaded.")
+					fmt.Print("\n")
 				}
 
 				break
 			}
 
 			if page.MustHas(`div.html-div.xdj266r.xat24cr.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x78zum5.x13a6bvl.x1d52u69.xktsk01`) {
-				fmt.Println(page.MustElement(`div.html-div.xdj266r.xat24cr.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x78zum5.x13a6bvl.x1d52u69.xktsk01`).MustText())
+				fmt.Print(page.MustElement(`div.html-div.xdj266r.xat24cr.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x78zum5.x13a6bvl.x1d52u69.xktsk01`).MustText())
 			}
 
 		} else {
-			fmt.Println("Page does not have view more comments button")
+			fmt.Print("Page does not have view more comments button")
 			break
 		}
 
@@ -176,21 +195,24 @@ for i := 0; i < maxIterations; i++ {
 			commentReplies := page.MustElements(`div.x1i10hfl.xjbqb8w.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x13fuv20.xu3j5b3.x1q0q8m5.x26u7qi.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.xdl72j9.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x2lwn1j.xeuugli.xexx8yu.x18d9i69.xkhd6sd.x1n2onr6.x16tdsg8.x1hl2dhg.xggy1nq.x1ja2u2z.x1t137rt.x1o1ewxj.x3x9cwd.x1e5q0jg.x13rtm0m.x3nfvp2.x87ps6o.x1lku1pv.x1a2a7pz.x6s0dn4.xi81zsa.x1q0g3np.x1iyjqo2.xs83m0k.xsyo7zv.x1mnrxsn`)
 
 			totalReplies := len(commentReplies)
-
-			fmt.Println("Total replies:", totalReplies)
-
+			fmt.Print("\n")
+			fmt.Print("Total replies:", totalReplies)
+			fmt.Print("\n")
 			if totalReplies == 0 {
 				fmt.Print("\n")
 				fmt.Print("No more replies")
 				fmt.Print("\n")
 				break
 			}
-
-			fmt.Println("Handle replies")
+			fmt.Print("\n")
+			fmt.Print("Handle replies")
+			fmt.Print("\n")
 
 			for range totalReplies {
 				page.MustEval(`() => document.querySelector('div.x1i10hfl.xjbqb8w.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x13fuv20.xu3j5b3.x1q0q8m5.x26u7qi.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.xdl72j9.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x2lwn1j.xeuugli.xexx8yu.x18d9i69.xkhd6sd.x1n2onr6.x16tdsg8.x1hl2dhg.xggy1nq.x1ja2u2z.x1t137rt.x1o1ewxj.x3x9cwd.x1e5q0jg.x13rtm0m.x3nfvp2.x87ps6o.x1lku1pv.x1a2a7pz.x6s0dn4.xi81zsa.x1q0g3np.x1iyjqo2.xs83m0k.xsyo7zv.x1mnrxsn').click()`)
-				fmt.Println("Replies button clicked")
+				fmt.Print("\n")
+				fmt.Print("Replies button clicked")
+				fmt.Print("\n")
 			}
 
 			commentReplies = nil
@@ -198,14 +220,21 @@ for i := 0; i < maxIterations; i++ {
 			time.Sleep(10 * time.Second)
 		}
 
-		fmt.Println(len(page.MustElements(`div[role="article"]`)))
+		fmt.Print("\n")
+		fmt.Print(len(page.MustElements(`div[role="article"]`)))
+		fmt.Print("\n")
 	}
 
 	articles := page.MustElements(`div[role="article"]`)
 
-	fmt.Println(len(articles))
+	fmt.Print(len(articles))
+	fmt.Print("\n")
+	fmt.Print(len(articles))
+	fmt.Print("\n")
 
 	var comments []Comment
+
+	fmt.Print("...About to start another loop...\n")
 
 	for _, article := range articles {
 		if !article.MustHas(`div.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x1vvkbs`) {
@@ -222,13 +251,19 @@ for i := 0; i < maxIterations; i++ {
 			continue
 		}
 
-		// Errors retreiving commentor name lead to an error if commentor name logged to console.
-		a := article.MustElement(`a.x1i10hfl.xjbqb8w.x1ejq31n.xd10rxx.x1sy0etr.x17r0tee.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.xt0psk2.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x16tdsg8.x1hl2dhg.xggy1nq.x1a2a7pz.x1heor9g.xkrqix3.x1sur9pj.x1s688f`)
+		a, err := article.Element(`a.x1i10hfl.xjbqb8w.x1ejq31n.xd10rxx.x1sy0etr.x17r0tee.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.xt0psk2.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x16tdsg8.x1hl2dhg.xggy1nq.x1a2a7pz.x1heor9g.xkrqix3.x1sur9pj.x1s688f`)
+		if err != nil || a == nil {
+			fmt.Println("...No commenter name found, skipping...")
+			continue
+		}
+
 		commentorName := strings.TrimSpace(a.MustText())
+
+		// a := article.MustElement(`a.x1i10hfl.xjbqb8w.x1ejq31n.xd10rxx.x1sy0etr.x17r0tee.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.xt0psk2.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x16tdsg8.x1hl2dhg.xggy1nq.x1a2a7pz.x1heor9g.xkrqix3.x1sur9pj.x1s688f`)
+		//commentorName := strings.TrimSpace(a.MustText())
 		//fmt.Println(commentorName)
 
 		href := *a.MustAttribute(`href`)
-				// Not sure why reformatting the URL prefix, but unnecessary for my use case.
 		href = fmt.Sprintf(`%s`, href)
 		//fmt.Println(href)
 		// p := browser.MustPage(href).MustWaitLoad()
@@ -247,6 +282,7 @@ for i := 0; i < maxIterations; i++ {
 		})
 	}
 
+	fmt.Print("...I'm about to attempt exporting to Excel...\n")
 	if err := exportCommentsToExcel(comments, "comments.xlsx"); err != nil {
 		log.Fatal(err)
 	}
